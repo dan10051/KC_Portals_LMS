@@ -1,0 +1,89 @@
+image: node:14.17.0
+
+pipelines:
+
+  branches:
+    experimental:               # Exp deploy
+      - step:
+         name: EXP Deploy KC Portals
+         caches:
+           - node
+         script:
+           - npm install
+           - npm update
+           - npm install -g gulp
+           - gulp build
+
+
+           - pipe: atlassian/rsync-deploy:0.4.4
+             variables:
+               USER: '$DEPLOY_USER'
+               SERVER: '$DEPLOY_SERVER'
+               REMOTE_PATH: '$DEPLOY_REMOTE_PATH_EXP'
+               LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/'
+               EXTRA_ARGS: '--exclude-from=.gitignore'
+
+           - pipe: atlassian/aws-cloudfront-invalidate:0.5.0
+             variables:
+               AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+               AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+               AWS_DEFAULT_REGION: us-west-2
+               DISTRIBUTION_ID: 'E1SOWAV45IBTZX'
+
+
+
+    stage:
+      - step:                        # Stage deploy
+         name: Stage Deploy KC Portals
+         caches:
+           - node
+         script:
+           - npm install
+           - npm update
+           - npm install -g gulp
+           - gulp build
+
+           - pipe: atlassian/rsync-deploy:0.4.4
+             variables:
+               USER: '$DEPLOY_USER'
+               SERVER: '$DEPLOY_SERVER'
+               REMOTE_PATH: '$DEPLOY_REMOTE_PATH_STAGE'
+               LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/'
+               EXTRA_ARGS: '--exclude-from=.gitignore'
+
+           - pipe: atlassian/aws-cloudfront-invalidate:0.5.0
+             variables:
+               AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+               AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+               AWS_DEFAULT_REGION: us-west-2
+               DISTRIBUTION_ID: 'E2UVL8L1YNWIOM'
+
+
+
+  custom:
+    deployment-to-Stable-Manual: # Another display name
+    - step:                        # Prod deploy
+       name: Deploy STABLE KC Portals MANUALY
+       deployment: stable
+       caches:
+         - node
+       script:
+         - npm install
+         - npm update
+         - npm install -g gulp
+         - gulp build
+
+         - pipe: atlassian/rsync-deploy:0.4.4
+           variables:
+             USER: '$DEPLOY_USER'
+             SERVER: '$DEPLOY_SERVER'
+             REMOTE_PATH: '$DEPLOY_REMOTE_PATH_STABLE'
+             LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/'
+             EXTRA_ARGS: '--exclude-from=.gitignore'
+
+         - pipe: atlassian/aws-cloudfront-invalidate:0.5.0
+           variables:
+             AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+             AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+             AWS_DEFAULT_REGION: us-west-2
+             DISTRIBUTION_ID: 'E3GJJSNYELJ4SX'
