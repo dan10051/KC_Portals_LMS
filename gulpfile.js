@@ -188,7 +188,10 @@ gulp.task('babel', gulp.series('optimize', function (done) {
 
     return gulp.src('js/bundle/*.js')
         .pipe(babel({
-            "presets": ["es2015"],
+            "presets": [
+                "@babel/preset-env",
+                "@babel/preset-react"
+              ],
             "plugins": ["transform-object-assign"],
             "compact": true,
             "comments": false
