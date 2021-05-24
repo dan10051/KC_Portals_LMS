@@ -12,7 +12,7 @@ pipelines:
            - npm install
            - npm update
            - npm install -g gulp
-           - gulp build
+           - gulp --gulpfile gulpfile-bitbucket.js build
 
 
            - pipe: atlassian/rsync-deploy:0.4.4
@@ -41,7 +41,7 @@ pipelines:
            - npm install
            - npm update
            - npm install -g gulp
-           - gulp build
+           - gulp --gulpfile gulpfile-bitbucket.js build
 
            - pipe: atlassian/rsync-deploy:0.4.4
              variables:
@@ -71,7 +71,7 @@ pipelines:
          - npm install
          - npm update
          - npm install -g gulp
-         - gulp build
+         - gulp --gulpfile gulpfile-bitbucket.js build
 
          - pipe: atlassian/rsync-deploy:0.4.4
            variables:
