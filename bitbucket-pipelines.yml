@@ -9,6 +9,13 @@ pipelines:
          caches:
            - node
          script:
+           - mv package.json package.json-deploybot
+           - mv package.json-bitbucket package.json
+           - rm package-lock.json
+
+           - echo $hardCodedOverrideConfig > js/overrideConfig.json
+           - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
+
            - npm install
            - npm update
            - npm install -g gulp
@@ -38,6 +45,9 @@ pipelines:
          caches:
            - node
          script:
+           - mv package.json package.json-deploybot
+           - mv package.json-bitbucket package.json
+           - rm package-lock.json
            - npm install
            - npm update
            - npm install -g gulp
@@ -68,6 +78,9 @@ pipelines:
        caches:
          - node
        script:
+         - mv package.json package.json-deploybot
+         - mv package.json-bitbucket package.json
+         - rm package-lock.json
          - npm install
          - npm update
          - npm install -g gulp
@@ -87,3 +100,28 @@ pipelines:
              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
              AWS_DEFAULT_REGION: us-west-2
              DISTRIBUTION_ID: 'E3GJJSNYELJ4SX'
+
+
+
+    deployment-test-DEVOPS-12: # Another display name
+    - step:                        # DEVOPS-12 deploy
+       name: Deploy DEVOPS-12 KC Portals MANUALY
+       deployment: DEVOPS-12
+       caches:
+         - node
+       script:
+         - mv package.json package.json-deploybot
+         - mv package.json-bitbucket package.json
+         - rm package-lock.json
+         - npm install
+         - npm update
+         - npm install -g gulp
+         - gulp --gulpfile gulpfile-bitbucket.js build
+
+         - pipe: atlassian/rsync-deploy:0.4.4
+           variables:
+             USER: '$DEPLOY_USER'
+             SERVER: '$DEPLOY_SERVER'
+             REMOTE_PATH: '$DEPLOY_REMOTE_PATH_EXP'
+             LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/'
+             EXTRA_ARGS: '--exclude-from=.gitignore'

@@ -1,0 +1,30 @@
+{
+  "name": "application-name",
+  "version": "0.0.2",
+  "scripts": {
+    "build": "node optimize/r.js -o optimize/build.js && babel optimize/bundle/bundle.js -o js/bundle.js && rm optimize/bundle/bundle.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.1",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.2",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "del": "^6.0.0",
+    "event-stream": "^4.0.1",
+    "fs": "0.0.1-security",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-hash": "^4.2.2",
+    "gulp-htmlmin": "5.0.1",
+    "gulp-inject": "^5.0.5",
+    "path": "^0.12.7",
+    "requirejs": "^2.3.6"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
