@@ -15,6 +15,7 @@ pipelines:
 
            - echo $hardCodedOverrideConfig > js/overrideConfig.json
            - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
+           - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
 
            - npm install
            - npm update
@@ -48,6 +49,11 @@ pipelines:
            - mv package.json package.json-deploybot
            - mv package.json-bitbucket package.json
            - rm package-lock.json
+
+           - echo $hardCodedOverrideConfig > js/overrideConfig.json
+           - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
+           - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
+
            - npm install
            - npm update
            - npm install -g gulp
@@ -81,6 +87,10 @@ pipelines:
          - mv package.json package.json-deploybot
          - mv package.json-bitbucket package.json
          - rm package-lock.json
+         - echo $hardCodedOverrideConfig > js/overrideConfig.json
+         - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
+         - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
+
          - npm install
          - npm update
          - npm install -g gulp
@@ -113,6 +123,10 @@ pipelines:
          - mv package.json package.json-deploybot
          - mv package.json-bitbucket package.json
          - rm package-lock.json
+         - echo $hardCodedOverrideConfig > js/overrideConfig.json
+         - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
+         - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
+
          - npm install
          - npm update
          - npm install -g gulp
