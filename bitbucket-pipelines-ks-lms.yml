@@ -5,22 +5,20 @@ pipelines:
   branches:
     experimental:               # Exp deploy
       - step:
-         name: EXP Deploy KC Portals
+         name: EXP Deploy KC LMS
          caches:
            - node
          script:
-           - mv package.json package.json-deploybot
-           - mv package.json-bitbucket package.json
-           - rm package-lock.json
-
-           - echo $hardCodedOverrideConfig > js/overrideConfig.json
+           - mv package-bitbucket.json package.json
+           - mv js/overrideConfig-format.json js/overrideConfig.json
            - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-           - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
-
+           - tail -n +2 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
            - npm install
            - npm update
            - npm install -g gulp
-           - gulp --gulpfile gulpfile-bitbucket.js build
+           - npm install -D
+           - gulp sprite
+           - gulp css-build
 
 
            - pipe: atlassian/rsync-deploy:0.4.4
@@ -37,27 +35,26 @@ pipelines:
                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                AWS_DEFAULT_REGION: us-west-2
                DISTRIBUTION_ID: 'E1SOWAV45IBTZX'
+               PATHS: /admin/*
 
 
 
     stage:
       - step:                        # Stage deploy
-         name: Stage Deploy KC Portals
+         name: Stage Deploy KC LMS
          caches:
            - node
          script:
-           - mv package.json package.json-deploybot
-           - mv package.json-bitbucket package.json
-           - rm package-lock.json
-
-           - echo $hardCodedOverrideConfig_stage > js/overrideConfig.json
+           - mv package-bitbucket.json package.json
+           - mv js/overrideConfig-format-stage.json js/overrideConfig.json
            - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-           - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
-
+           - tail -n +2 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
            - npm install
            - npm update
            - npm install -g gulp
-           - gulp --gulpfile gulpfile-bitbucket.js build
+           - npm install -D
+           - gulp sprite
+           - gulp css-build
 
            - pipe: atlassian/rsync-deploy:0.4.4
              variables:
@@ -73,28 +70,29 @@ pipelines:
                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                AWS_DEFAULT_REGION: us-west-2
                DISTRIBUTION_ID: 'E2UVL8L1YNWIOM'
+               PATHS: /admin/*
 
 
 
   custom:
     deployment-to-Stable-Manual: # Another display name
     - step:                        # Prod deploy
-       name: Deploy STABLE KC Portals MANUALY
+       name: Deploy STABLE KC LMS MANUALY
        deployment: stable
        caches:
          - node
        script:
-         - mv package.json package.json-deploybot
-         - mv package.json-bitbucket package.json
-         - rm package-lock.json
-         - echo $hardCodedOverrideConfig_prod > js/overrideConfig.json
-         - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-         - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
 
+         - mv package-bitbucket.json package.json
+         - mv js/overrideConfig-format-prod.json js/overrideConfig.json
+         - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
+         - tail -n +2 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
          - npm install
          - npm update
          - npm install -g gulp
-         - gulp --gulpfile gulpfile-bitbucket.js build
+         - npm install -D
+         - gulp sprite
+         - gulp css-build
 
          - pipe: atlassian/rsync-deploy:0.4.4
            variables:
@@ -110,27 +108,27 @@ pipelines:
              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
              AWS_DEFAULT_REGION: us-west-2
              DISTRIBUTION_ID: 'E3GJJSNYELJ4SX'
+             PATHS: /admin/*
 
 
 
     deployment-test-DEVOPS-12: # Another display name
     - step:                        # DEVOPS-12 deploy
-       name: Deploy DEVOPS-12 KC Portals MANUALY
+       name: Deploy DEVOPS-12 KC LMS MANUALY
        deployment: DEVOPS-12
        caches:
          - node
        script:
-         - mv package.json package.json-deploybot
-         - mv package.json-bitbucket package.json
-         - rm package-lock.json
-         - echo $hardCodedOverrideConfig > js/overrideConfig.json
+         - mv package-bitbucket.json package.json
+         - mv js/overrideConfig-format.json js/overrideConfig.json
          - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-         - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
-
+         - tail -n +2 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
          - npm install
          - npm update
          - npm install -g gulp
-         - gulp --gulpfile gulpfile-bitbucket.js build
+         - npm install -D
+         - gulp sprite
+         - gulp css-build
 
          - pipe: atlassian/rsync-deploy:0.4.4
            variables:
@@ -139,3 +137,4 @@ pipelines:
              REMOTE_PATH: '$DEPLOY_REMOTE_PATH_EXP'
              LOCAL_PATH: '${BITBUCKET_CLONE_DIR}/'
              EXTRA_ARGS: '--exclude-from=.gitignore'
+             PATHS: /admin/*

@@ -1,0 +1,30 @@
+{
+  "name": "lms",
+  "version": "1.0.0",
+  "description": "* Install node js\r * Install require js (see: http://requirejs.org/docs/optimization.html#download)\r * Run r.js -o build/build.js (or r.js.cmd -o build/build.js for Windows)\r * Using .htaccess for change index.htm to index.min.htm",
+  "main": "index.html",
+  "scripts": {
+    "test": "mocha --recursive './tests/**/*.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://vasenin26@bitbucket.org/knowledgecity/kc-lms.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/knowledgecity/kc-lms#readme",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-csso": "^4.0.1",
+    "gulp-sass": "^4.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp.spritesmith": "^6.12.1",
+    "jsdom": "^16.6.0",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^8.4.0",
+    "requirejs": "^2.3.6",
+    "sprity": "^1.0.8"
+  }
+}
