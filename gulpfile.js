@@ -26,50 +26,48 @@ const
             });
         });
 };
-
-
 gulp.task('preclean', function (done) {
 
-    return del(['../js/bundle/*.js', '../index.htm'],
-              {force: true});
+    return del(['js/bundle/*.js', './index.htm']);
     done();
 });
 
 gulp.task('optimize', gulp.series('preclean', function (done) {
 
-    return gulp.src('../js/1.0/*.js')
-        .pipe(gulp.dest('../js/1.0/temp'))
+    return gulp.src('js/1.0/*.js')
+        .pipe(gulp.dest('js/1.0/temp'))
         .pipe(rjs({
             force: true,
             name: 'main',
-            include: ["../../vendor/require"],
-            out: "../js/bundle/bundle.js",
+            include: ["../vendor/require"],
+            out: "js/bundle/bundle.js",
             baseUrl: baseUrl,
             optimize: "none",
             paths: {
-                'mustache':          '../../vendor/mustache.min',
-                'history':           '../../vendor/history.min',
-                'jquery':            '../../vendor/jquery-3.5.0.min',
-                'owl':               '../../vendor/owl.carousel.min',
-                'bootstrap':         '../../vendor/bootstrap/3.3.7/js/bootstrap.min',
-                'jquery.ccValidator':'../../vendor/jquery.creditCardValidator',
-                'jquery.inputmask':  '../../vendor/jquery.inputmask.bundle',
-                'jquery.mask':       '../../vendor/jquery.mask.min',
-                'jquery.cookie':     '../../vendor/jquery.cookie.min',
-                'jquery.mousewheel': '../../vendor/jquery.mousewheel.min',
-                'jquery.fancybox':   '../../vendor/jquery.fancybox.pack',
-                'smartbanner':       '../../vendor/jquery.smartbanner',
-                'validate':          '../../vendor/jquery.validate.min',
-                'select2':           '../../vendor/select2/select2.min',
-                'tna':               '//tna.knowledgecity.com/js/tna',
+                'mustache':          '../vendor/mustache.min',
+                'history':           '../vendor/history.min',
+                'jquery':            '../vendor/jquery-3.5.0.min',
+                'owl':               '../vendor/owl.carousel.min',
+                'bootstrap':         '../vendor/bootstrap/3.3.7/js/bootstrap.min',
+                'jquery.ccValidator':'../vendor/jquery.creditCardValidator',
+                'jquery.inputmask':  '../vendor/jquery.inputmask.bundle',
+                'jquery.mask':       '../vendor/jquery.mask.min',
+                'jquery.cookie':     '../vendor/jquery.cookie.min',
+                'jquery.mousewheel': '../vendor/jquery.mousewheel.min',
+                'jquery.fancybox':   '../vendor/jquery.fancybox.pack',
+                'smartbanner':       '../vendor/jquery.smartbanner',
+                'validate':          '../vendor/jquery.validate.min',
+                'select2':           '../vendor/select2/select2.min',
+                'tna':               'lib/TnaAdapter',
                 'CDN':               '//cdn0.knowledgecity.com/vendors/',
                 'videoplayer':       '//cdn0.knowledgecity.com/vendors/videojs-player/7.6.6/video2',
-                'document':          '../../1.0/global/document',
-                'window':            '../../1.0/global/window',
+                'document':          '../1.0/global/document',
+                'window':            '../1.0/global/window',
                 //'videoswitcher':     '//cdn0.knowledgecity.com/vendors/videojs-player/video-switcher.min',
-                'videojseme':        '../../vendor/videojs-contrib-eme',
-                'videojsquality':    '../../vendor/videojs-contrib-quality-levels',
-                'videojsqualityui':  '../../vendor/videojs-http-source-selector',
+                'videojseme':        '../vendor/videojs-contrib-eme',
+                'resload':           '//cdn0.knowledgecity.com/vendors/resload/resload',
+                'videojsquality':    '../vendor/videojs-contrib-quality-levels',
+                'videojsqualityui':  '../vendor/videojs-http-source-selector',
                 'WebPlayer':         '//cdn0.knowledgecity.com/vendors/kc/webplayer/2.0/webplayer',
                 'tinCanApi':         '//cdn0.knowledgecity.com/vendors/kc/kcpack/tincanapi',
                 'scormApi':          '//cdn0.knowledgecity.com/vendors/kc/kcpack/scormapi',
@@ -153,15 +151,14 @@ gulp.task('optimize', gulp.series('preclean', function (done) {
 }));
 
 
-var folders = ['../templates/']
+var folders = ['./templates/']
 gulp.task('minify-js', function(done) {
   for(i=0;i<folders.length;i++){
-    gulp.src(folders[i]+'../**/*.js')
+    gulp.src(folders[i]+'**/*.js')
         .pipe(babel({
             "presets": ["es2015"],
             "plugins": ["transform-object-assign"],
             "compact": true,
-            force: true,
             "comments": false
         }))
         .pipe(gulp.dest(folders[i]))
@@ -169,21 +166,21 @@ gulp.task('minify-js', function(done) {
     done();
 });
 
-var folders = ['../templates/']
+var folders = ['./templates/']
 gulp.task('minify-css', function(done) {
   for(i=0;i<folders.length;i++){
       gulp.src(folders[i]+'**/*.css')
-        .pipe(cleanCSS({debug: true, rebase: false, force: true}))
+        .pipe(cleanCSS({debug: true, rebase: false}))
         .pipe(gulp.dest(folders[i]));
     }
     done();
 });
 
-var folders = ['../templates/']
+var folders = ['./templates/']
 gulp.task('minify-html', function(done) {
     for(i=0;i<folders.length;i++){
       gulp.src(folders[i]+'**/*.mst')
-        .pipe(htmlmin({ collapseWhitespace: true, removeComments: true, force: true }))
+        .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
         .pipe(gulp.dest(folders[i]));
     }
     done();
@@ -191,7 +188,7 @@ gulp.task('minify-html', function(done) {
 
 gulp.task('babel', gulp.series('optimize', function (done) {
 
-    return gulp.src('../js/bundle/*.js')
+    return gulp.src('js/bundle/*.js')
         .pipe(babel({
             "presets": [
                 "@babel/preset-env",
@@ -199,11 +196,10 @@ gulp.task('babel', gulp.series('optimize', function (done) {
               ],
             "plugins": ["transform-object-assign"],
             "compact": true,
-            force: true,
             "comments": false
         }))
         .pipe(hash())
-        .pipe(gulp.dest('../js/bundle'))
+        .pipe(gulp.dest('js/bundle'))
     done();
 
 }));
@@ -212,18 +208,18 @@ gulp.task('babel', gulp.series('optimize', function (done) {
 
 gulp.task('postclean', gulp.series('babel', 'minify-js', 'minify-css', 'minify-html', function (done) {
 
-    return del(['../js/bundle/bundle.js', '../js/1.0/temp'], {force: true})
+    return del(['js/bundle/bundle.js', 'js/1.0/temp'])
     done();
 
 }));
 
 gulp.task('inject', gulp.series('postclean', function (done) {
 
-    var target = gulp.src('../src/index.htm'),
+    var target = gulp.src('./src/index.htm'),
     transform = function (filepath, file, i, length) {
             return '<script src="' + STATICHOST + filepath + '"></script>';
         };
-    return target.pipe(inject(gulp.src('../js/bundle/*.js', {read: false}),{transform: transform}))
+    return target.pipe(inject(gulp.src('js/bundle/*.js', {read: false}),{transform: transform}))
         .pipe(gulp.dest('.'));
     done();
 }));
@@ -235,7 +231,7 @@ gulp.task('build', gulp.series('inject', function(done) {
 
 gulp.task('dev', function() {
 
-    var target = gulp.src('../src/index.htm'),
+    var target = gulp.src('./src/index.htm'),
         transform = function (filepath, file, i, length) {
             return '<script data-main="/js/1.0/main" src="' + STATICHOST + filepath + '"></script>';
         };

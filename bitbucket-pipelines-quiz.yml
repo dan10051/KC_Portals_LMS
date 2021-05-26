@@ -1,27 +1,12 @@
-image: node:14.17.0
+#image: node:14.17.0
 
 pipelines:
 
   branches:
     experimental:               # Exp deploy
       - step:
-         name: EXP Deploy KC Portals
-         caches:
-           - node
+         name: EXP Deploy QUIZ
          script:
-           - mv package.json package.json-deploybot
-           - mv package.json-bitbucket package.json
-           - rm package-lock.json
-
-           - echo $hardCodedOverrideConfig > js/overrideConfig.json
-           - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-           - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
-
-           - npm install
-           - npm update
-           - npm install -g gulp
-           - gulp --gulpfile gulpfile-bitbucket.js build
-
 
            - pipe: atlassian/rsync-deploy:0.4.4
              variables:
@@ -37,27 +22,14 @@ pipelines:
                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                AWS_DEFAULT_REGION: us-west-2
                DISTRIBUTION_ID: 'E1SOWAV45IBTZX'
+               PATHS: /quiz/*
 
 
 
     stage:
       - step:                        # Stage deploy
-         name: Stage Deploy KC Portals
-         caches:
-           - node
+         name: Stage Deploy QUIZ
          script:
-           - mv package.json package.json-deploybot
-           - mv package.json-bitbucket package.json
-           - rm package-lock.json
-
-           - echo $hardCodedOverrideConfig_stage > js/overrideConfig.json
-           - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-           - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
-
-           - npm install
-           - npm update
-           - npm install -g gulp
-           - gulp --gulpfile gulpfile-bitbucket.js build
 
            - pipe: atlassian/rsync-deploy:0.4.4
              variables:
@@ -73,28 +45,16 @@ pipelines:
                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                AWS_DEFAULT_REGION: us-west-2
                DISTRIBUTION_ID: 'E2UVL8L1YNWIOM'
+               PATHS: /quiz/*
 
 
 
   custom:
     deployment-to-Stable-Manual: # Another display name
     - step:                        # Prod deploy
-       name: Deploy STABLE KC Portals MANUALY
+       name: Deploy STABLE QUIZ MANUALY
        deployment: stable
-       caches:
-         - node
        script:
-         - mv package.json package.json-deploybot
-         - mv package.json-bitbucket package.json
-         - rm package-lock.json
-         - echo $hardCodedOverrideConfig_prod > js/overrideConfig.json
-         - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-         - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
-
-         - npm install
-         - npm update
-         - npm install -g gulp
-         - gulp --gulpfile gulpfile-bitbucket.js build
 
          - pipe: atlassian/rsync-deploy:0.4.4
            variables:
@@ -110,27 +70,16 @@ pipelines:
              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
              AWS_DEFAULT_REGION: us-west-2
              DISTRIBUTION_ID: 'E3GJJSNYELJ4SX'
+             PATHS: /quiz/*
 
 
 
     deployment-test-DEVOPS-12: # Another display name
     - step:                        # DEVOPS-12 deploy
-       name: Deploy DEVOPS-12 KC Portals MANUALY
+       name: Deploy DEVOPS-12 QUIZ MANUALY
        deployment: DEVOPS-12
-       caches:
-         - node
-       script:
-         - mv package.json package.json-deploybot
-         - mv package.json-bitbucket package.json
-         - rm package-lock.json
-         - echo $hardCodedOverrideConfig > js/overrideConfig.json
-         - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-         - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
 
-         - npm install
-         - npm update
-         - npm install -g gulp
-         - gulp --gulpfile gulpfile-bitbucket.js build
+       script:
 
          - pipe: atlassian/rsync-deploy:0.4.4
            variables:

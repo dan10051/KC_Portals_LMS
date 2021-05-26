@@ -9,13 +9,10 @@ pipelines:
          caches:
            - node
          script:
-           - mv package.json package.json-deploybot
            - mv package.json-bitbucket package.json
            - rm package-lock.json
-
            - echo $hardCodedOverrideConfig > js/overrideConfig.json
            - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-           - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
 
            - npm install
            - npm update
@@ -52,7 +49,6 @@ pipelines:
 
            - echo $hardCodedOverrideConfig_stage > js/overrideConfig.json
            - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-           - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
 
            - npm install
            - npm update
@@ -89,7 +85,6 @@ pipelines:
          - rm package-lock.json
          - echo $hardCodedOverrideConfig_prod > js/overrideConfig.json
          - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-         - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
 
          - npm install
          - npm update
@@ -125,7 +120,6 @@ pipelines:
          - rm package-lock.json
          - echo $hardCodedOverrideConfig > js/overrideConfig.json
          - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-         - tail -n +3 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
 
          - npm install
          - npm update

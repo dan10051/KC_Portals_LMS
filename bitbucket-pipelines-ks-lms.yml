@@ -12,7 +12,6 @@ pipelines:
            - mv package-bitbucket.json package.json
            - mv js/overrideConfig-format.json js/overrideConfig.json
            - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-           - tail -n +2 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
            - npm install
            - npm update
            - npm install -g gulp
@@ -48,7 +47,6 @@ pipelines:
            - mv package-bitbucket.json package.json
            - mv js/overrideConfig-format-stage.json js/overrideConfig.json
            - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-           - tail -n +2 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
            - npm install
            - npm update
            - npm install -g gulp
@@ -86,7 +84,6 @@ pipelines:
          - mv package-bitbucket.json package.json
          - mv js/overrideConfig-format-prod.json js/overrideConfig.json
          - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-         - tail -n +2 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
          - npm install
          - npm update
          - npm install -g gulp
@@ -108,7 +105,7 @@ pipelines:
              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
              AWS_DEFAULT_REGION: us-west-2
              DISTRIBUTION_ID: 'E3GJJSNYELJ4SX'
-             PATHS: /admin/*
+             PATHS: /quiz/*
 
 
 
@@ -122,7 +119,6 @@ pipelines:
          - mv package-bitbucket.json package.json
          - mv js/overrideConfig-format.json js/overrideConfig.json
          - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
-         - tail -n +2 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
          - npm install
          - npm update
          - npm install -g gulp
