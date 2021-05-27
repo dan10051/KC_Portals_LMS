@@ -11,8 +11,9 @@ pipelines:
          script:
            - mv package.json-bitbucket package.json
            - rm package-lock.json
-           - echo $hardCodedOverrideConfig > js/overrideConfig.json
+           - mv js/overrideConfig.EXP.json js/overrideConfig.json
            - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
+           - tail -n +2 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
 
            - npm install
            - npm update
@@ -43,12 +44,11 @@ pipelines:
          caches:
            - node
          script:
-           - mv package.json package.json-deploybot
            - mv package.json-bitbucket package.json
            - rm package-lock.json
-
-           - echo $hardCodedOverrideConfig_stage > js/overrideConfig.json
+           - mv js/overrideConfig.STAGE.json js/overrideConfig.json
            - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
+           - tail -n +2 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
 
            - npm install
            - npm update
@@ -80,11 +80,11 @@ pipelines:
        caches:
          - node
        script:
-         - mv package.json package.json-deploybot
          - mv package.json-bitbucket package.json
          - rm package-lock.json
-         - echo $hardCodedOverrideConfig_prod > js/overrideConfig.json
+         - mv js/overrideConfig.PROD.json js/overrideConfig.json
          - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
+         - tail -n +2 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
 
          - npm install
          - npm update
@@ -115,11 +115,11 @@ pipelines:
        caches:
          - node
        script:
-         - mv package.json package.json-deploybot
          - mv package.json-bitbucket package.json
          - rm package-lock.json
-         - echo $hardCodedOverrideConfig > js/overrideConfig.json
+         - mv js/overrideConfig.EXP.json js/overrideConfig.json
          - sed -i "s/%BITBUCKET_BUILD_NUMBER%/$BITBUCKET_BUILD_NUMBER/"  js/overrideConfig.json
+         - tail -n +2 .gitignore > tmp_gitignore &&  mv tmp_gitignore .gitignore
 
          - npm install
          - npm update
