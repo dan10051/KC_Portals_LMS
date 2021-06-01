@@ -1,4 +1,4 @@
-var STATICHOST = '';
+wvar STATICHOST = '';
 'use strict';
 
 const baseUrl = 'js/1.0';

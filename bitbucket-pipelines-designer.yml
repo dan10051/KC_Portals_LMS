@@ -5,7 +5,7 @@ pipelines:
   branches:
     experimental:               # Exp deploy
       - step:
-         name: EXP Deploy QUIZ
+         name: EXP Deploy Designer
          script:
            - pipe: atlassian/rsync-deploy:0.4.4
              variables:
@@ -18,7 +18,7 @@ pipelines:
 
     stage:
       - step:                        # Stage deploy
-         name: Stage Deploy QUIZ
+         name: Stage Deploy Designer
          script:
 
            - pipe: atlassian/rsync-deploy:0.4.4
@@ -32,7 +32,7 @@ pipelines:
   custom:
     deployment-to-Stable-Manual: # Another display name
     - step:                        # Prod deploy
-       name: Deploy STABLE QUIZ MANUALY
+       name: Deploy STABLE Designer MANUALY
        deployment: stable
        script:
 
@@ -47,7 +47,7 @@ pipelines:
 
     deployment-test-DEVOPS-12: # Another display name
     - step:                        # DEVOPS-12 deploy
-       name: Deploy DEVOPS-12 QUIZ MANUALY
+       name: Deploy DEVOPS-12 Designer MANUALY
        deployment: DEVOPS-12
 
        script:

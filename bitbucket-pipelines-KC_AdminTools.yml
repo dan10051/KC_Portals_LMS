@@ -5,8 +5,10 @@ pipelines:
   branches:
     experimental:               # Exp deploy
       - step:
-         name: EXP Deploy QUIZ
+         name: EXP Deploy Admin Tools
          script:
+           - mv app/overrideConfig_EXP.json app/overrideConfig.json
+
            - pipe: atlassian/rsync-deploy:0.4.4
              variables:
                USER: '$DEPLOY_USER'
@@ -18,9 +20,9 @@ pipelines:
 
     stage:
       - step:                        # Stage deploy
-         name: Stage Deploy QUIZ
+         name: Stage Deploy Admin Tools
          script:
-
+           - mv app/overrideConfig_Stage.json app/overrideConfig.json
            - pipe: atlassian/rsync-deploy:0.4.4
              variables:
                USER: '$DEPLOY_USER'
@@ -32,10 +34,10 @@ pipelines:
   custom:
     deployment-to-Stable-Manual: # Another display name
     - step:                        # Prod deploy
-       name: Deploy STABLE QUIZ MANUALY
+       name: Deploy STABLE Admin Tools MANUALY
        deployment: stable
        script:
-
+         - mv app/overrideConfig_Prod.json app/overrideConfig.json
          - pipe: atlassian/rsync-deploy:0.4.4
            variables:
              USER: '$DEPLOY_USER'
@@ -47,10 +49,11 @@ pipelines:
 
     deployment-test-DEVOPS-12: # Another display name
     - step:                        # DEVOPS-12 deploy
-       name: Deploy DEVOPS-12 QUIZ MANUALY
+       name: Deploy DEVOPS-12 Admin Tools MANUALY
        deployment: DEVOPS-12
 
        script:
+         - mv app/overrideConfig_EXP.json app/overrideConfig.json
          - pipe: atlassian/rsync-deploy:0.4.4
            variables:
              USER: '$DEPLOY_USER'
